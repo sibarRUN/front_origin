@@ -27,17 +27,21 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PATCH: 회원 정보 수정
-router.patch('/:id', async (req, res) => {
+// DELETE: 회원 삭제 (bongjini 데이터 포함)
+router.delete('/:id', async (req, res) => {
   const { id } = req.params;
-  const { PW, NICKNAME } = req.body;
+
   try {
-    await executeQuery('UPDATE register SET PW = :PW, NICKNAME = :NICKNAME WHERE ID = :ID', [
-      { name: 'PW', value: { stringValue: PW } },
-      { name: 'NICKNAME', value: { stringValue: NICKNAME } },
+    // 트랜잭션으로 회원 데이터와 관련 키/체중 데이터 삭제
+    await executeQuery('DELETE FROM bongjini WHERE ID = :ID', [
       { name: 'ID', value: { stringValue: id } },
     ]);
-    res.status(200).json({ message: 'User updated successfully' });
+
+    await executeQuery('DELETE FROM register WHERE ID = :ID', [
+      { name: 'ID', value: { stringValue: id } },
+    ]);
+
+    res.status(200).json({ message: 'User and related data deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: 'Database error' });
   }

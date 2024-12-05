@@ -151,9 +151,9 @@ const Navbar = () => {
         <Item
           whileHover={{ scale: 1.1, y: -5 }}
           whileTap={{ scale: 0.9, y: 0 }}
-          onClick={() => window.location.href = '/register&login.html'}
+          onClick={() => window.location.href = 'https://ap-northeast-2jczobrwlq.auth.ap-northeast-2.amazoncognito.com/login?client_id=e90hcf6rica8am3h81lcsuspe&response_type=code&scope=email+openid&redirect_uri=https%3A%2F%2Fd2u50llkglor25.cloudfront.net'}
         >
-          <Link to="#">Register&Login</Link>
+          <Link to="#">Register&Logout</Link>
         </Item>
 
         <Item
