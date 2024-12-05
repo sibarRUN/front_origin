@@ -109,7 +109,7 @@ const CoverVideo = () => {
             /*</div>data-scroll-delay="0.13"
             data-scroll-speed="4" */
           >
-            Ang!
+            Bong!
           </motion.h1>
           <motion.h1
             variants={item}
@@ -117,7 +117,7 @@ const CoverVideo = () => {
             /* data-scroll-delay="0.09"
             data-scroll-speed="4" */
           >
-            Ang!
+            Bong!
           </motion.h1>
           <motion.h1
             variants={item}
@@ -125,7 +125,7 @@ const CoverVideo = () => {
             /* data-scroll-delay="0.06"
             data-scroll-speed="4" */
           >
-            JJOM
+            Studio
           </motion.h1>
           <motion.h1
             variants={item}
@@ -133,7 +133,7 @@ const CoverVideo = () => {
             /* </div>data-scroll-delay="0.04"
             data-scroll-speed="4" */
           >
-            DD!!!
+            
           </motion.h1>
         </div>
         <motion.h2
@@ -143,7 +143,7 @@ const CoverVideo = () => {
           /* data-scroll-delay="0.04"
           data-scroll-speed="2" */
         >
-          Power Overwhelming
+          Made by Bong Studio
         </motion.h2>
       </Title>
 
