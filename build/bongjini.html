@@ -16,7 +16,9 @@
 
     body {
       font-family: 'Kaushan Script', sans-serif;
-      background: #1a1a1a;
+      background-image: url('suit.webp');
+      background-size: cover;
+      background-position: center;
       color: #fff;
       display: flex;
       justify-content: center;
@@ -27,15 +29,6 @@
       position: relative;
     }
 
-    .scrolling-text {
-      position: absolute;
-      top: 10%;
-      white-space: nowrap;
-      font-size: 2rem;
-      color: rgba(255, 255, 255, 0.5);
-      animation: moveText 10s linear infinite;
-    }
-
     .container {
       display: flex;
       gap: 2rem;
@@ -44,10 +37,10 @@
 
     .explain-container, .form-container {
       text-align: center;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(50, 50, 50, 0.9);
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     .explain-container {
@@ -65,7 +58,7 @@
     h1 {
       font-size: 3rem;
       margin-bottom: 2rem;
-      color: #333;
+      color: #ccc;
     }
 
     form {
@@ -92,7 +85,7 @@
     input[type="number"] {
       padding: 0.8rem;
       font-size: 1.2rem;
-      border: 1px solid #ccc;
+      border: 1px solid #555;
       border-radius: 5px;
       outline: none;
       transition: border-color 0.3s ease;
@@ -101,13 +94,13 @@
     }
 
     input[type="number"]:focus {
-      border-color: #666;
+      border-color: #888;
     }
 
     .btn {
       padding: 1rem 2rem;
       font-size: 1.2rem;
-      background-color: #444;
+      background-color: #333;
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -116,7 +109,7 @@
     }
 
     .btn:hover {
-      background-color: #666;
+      background-color: #555;
       transform: translateY(-3px);
     }
 
@@ -128,8 +121,6 @@
   </style>
 </head>
 <body>
-  <div class="scrolling-text" style="color: rgba(255, 255, 255, 0.5); animation: moveText 10s linear infinite;">BONGENIE BONGENIE BONGENIE BONGENIE BONGENIE BONGENIE BONGENIE BONGENIE BONGENIE BONGENIE</div>
-
   <div class="container">
     <div class="explain-container">
       <img src="explain.png" alt="Explanation">
