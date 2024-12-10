@@ -138,15 +138,15 @@
         <input type="file" accept="image/*" onchange="handleImageChange(event)">
         <img id="uploadedImage" alt="Uploaded" style="display: none;">
         <div class="input-group">
-          <input type="number" id="height" placeholder="Height" required style="height: 50px; font-size: 1.2rem;" min="0">
+          <input type="number" id="height" placeholder="Height" required min="0">
           <span>cm</span>
         </div>
         <div class="input-group">
-          <input type="number" id="weight" placeholder="Weight" required style="height: 50px; font-size: 1.2rem;" min="0">
+          <input type="number" id="weight" placeholder="Weight" required min="0">
           <span>kg</span>
         </div>
         <div class="button-group">
-          <button type="submit" class="btn">Submit</button>
+          <button id="submitButton" type="submit" class="btn">Submit</button>
           <button type="button" class="btn" onclick="history.back()">Back</button>
         </div>
       </form>
@@ -154,18 +154,115 @@
   </div>
 
   <script>
+    let isNewEntry = true; // 데이터 추가 여부 상태 (초기값: 새로운 데이터 추가)
+
+    // 이미지 파일이 변경될 때 호출되는 함수
     function handleImageChange(event) {
       const image = document.getElementById('uploadedImage');
-      image.src = URL.createObjectURL(event.target.files[0]);
-      image.style.display = 'block';
+      image.src = URL.createObjectURL(event.target.files[0]); // 선택한 이미지의 URL 생성
+      image.style.display = 'block'; // 이미지 표시
     }
 
-    function handleSubmit(event) {
-      event.preventDefault();
-      const height = document.getElementById('height').value;
-      const weight = document.getElementById('weight').value;
-      alert(`Height: ${height} cm, Weight: ${weight} kg`);
+    // 폼 제출 시 호출되는 함수
+    async function handleSubmit(event) {
+      event.preventDefault(); // 기본 제출 동작 방지
+
+      const height = document.getElementById('height').value; // 높이 값 가져오기
+      const weight = document.getElementById('weight').value; // 체중 값 가져오기
+
+      const userId = 'USER_ID_PLACEHOLDER'; // 실제 사용자 ID를 여기에 추가하거나 인증 시스템에서 가져옵니다.
+
+      const url = 'http://localhost:3000/bongjini'; // API URL
+
+      try {
+        if (isNewEntry) {
+          // 처음 실행: POST 요청
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-user-id': userId,
+            },
+            body: JSON.stringify({
+              ID: userId,
+              Height: parseFloat(height),
+              Weight: parseFloat(weight),
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`); // 오류 처리
+          }
+
+          const data = await response.json(); // 응답 데이터 파싱
+          alert(`Data successfully added: ${JSON.stringify(data)}`); // 성공 메시지
+
+          isNewEntry = false; // POST 완료 후 수정 상태로 전환
+          updateSubmitButtonLabel(); // 버튼 라벨 업데이트
+        } else {
+          // 이후 실행: PATCH 요청
+          const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'x-user-id': userId,
+            },
+            body: JSON.stringify({
+              Height: height ? parseFloat(height) : undefined,
+              Weight: weight ? parseFloat(weight) : undefined,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error(`Error: ${response.statusText}`); // 오류 처리
+          }
+
+          const data = await response.json(); // 응답 데이터 파싱
+          alert(`Data successfully updated: ${JSON.stringify(data)}`); // 성공 메시지
+        }
+      } catch (error) {
+        console.error('Error submitting data:', error); // 오류 로그
+        alert(`Error: ${error.message}`); // 오류 메시지
+      }
     }
+
+    // 페이지 로드 시 데이터 상태 확인 (GET 요청)
+    async function checkExistingData() {
+      const userId = 'USER_ID_PLACEHOLDER'; // 실제 사용자 ID를 여기에 추가하거나 인증 시스템에서 가져옵니다.
+
+      try {
+        const response = await fetch('http://localhost:3000/bongjini', {
+          method: 'GET',
+          headers: {
+            'x-user-id': userId,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json(); // 응답 데이터 파싱
+          console.log('Existing data found:', data); // 기존 데이터 로그
+          isNewEntry = false; // 기존 데이터가 있으면 PATCH 모드로 전환
+        } else if (response.status === 404) {
+          console.log('No existing data found. Switching to POST mode.'); // 데이터 없음 로그
+          isNewEntry = true; // 데이터가 없으면 POST 모드 유지
+        } else {
+          throw new Error(`Error: ${response.statusText}`); // 오류 처리
+        }
+      } catch (error) {
+        console.error('Error checking existing data:', error); // 오류 로그
+      }
+
+      updateSubmitButtonLabel(); // 상태 확인 후 버튼 라벨 업데이트
+    }
+
+    // 버튼 라벨 업데이트
+    function updateSubmitButtonLabel() {
+      const button = document.getElementById('submitButton');
+      button.textContent = isNewEntry ? 'Add Data (POST)' : 'Update Data (PATCH)'; // 버튼 텍스트 변경
+    }
+
+    // 페이지 로드 시 데이터 상태 확인
+    window.onload = checkExistingData; // 페이지 로드 시 데이터 상태 확인 함수 호출
   </script>
 </body>
 </html>
